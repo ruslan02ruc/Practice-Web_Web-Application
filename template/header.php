@@ -59,7 +59,6 @@ desired effect
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"> Расписание</span>
     </a>
-
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
