@@ -75,14 +75,14 @@ desired effect
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Здравствуйте, Джон Смит Тимофеевич</span>
+              <span class="hidden-xs">Здравствуйте,<?= $_SESSION['fio']?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
                 <p>
-                  Джон Смит Тимофеевич
-                  <small>Администратор</small>
+                 <?= $_SESSION['fio']?>
+                  <small><?=$_SESSION['roleName']?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -92,7 +92,9 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Профиль</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Выход</a>
+                    <form method="POST">
+                        <button type="submit" class="btn btn-default btn-flat" name="out">Выход</button>
+                    </form>
                 </div>
               </li>
             </ul>

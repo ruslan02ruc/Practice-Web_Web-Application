@@ -14,7 +14,15 @@
 class User extends Table {
     //put your code here
     public function validate() {
-        return false;
+        if (!empty($this->lastname) &&
+            !empty($this->firstname) &&
+            !empty($this->login) &&
+            !empty($this->pass) &&
+            !empty($this->role_id) &&
+            !empty($this->gender_id)) {
+                return true;
+            }
+            return false;
     }
     public $user_id = 0;
     public $lastname = '';
