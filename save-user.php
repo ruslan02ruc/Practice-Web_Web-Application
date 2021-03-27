@@ -3,7 +3,7 @@ require_once 'secure.php';
 if (isset($_POST['user_id'])) {
     $user = new User();
     $user->lastname = Helper::clearString($_POST['lastname']);
-    $user->user_id= Helper::clearInt($_POST['user_id']);
+    $user->user_id = Helper::clearInt($_POST['user_id']);
     $user->firstname = Helper::clearString($_POST['firstname']);
     $user->patronymic = Helper::clearString($_POST['patronymic']);
     $user->birthday = Helper::clearString($_POST['birthday']);
@@ -16,17 +16,32 @@ if (isset($_POST['user_id'])) {
         $teacher = new Teacher();
         $teacher->otdel_id = Helper::clearInt($_POST['otdel_id']);
         $teacher->user_id = $user->user_id;
-    if ((new TeacherMap())->save($user, $teacher)) {
-        header('Location: profile-
-        teacher.php?id='.$teacher->user_id);
-    } else {
-        if ($teacher->user_id) {
-            header('Location: add-
-            teacher.php?id='.$teacher->user_id);
+        if ((new TeacherMap())->save($user, $teacher)) {
+            header('Location: profile-teacher.php?id=' . $teacher->user_id);
         } else {
-            header('Location: add-teacher.php');
+            if ($teacher->user_id) {
+                header('Location: add-teacher.php?id=' . $teacher->user_id);
+            } else {
+                header('Location: add-teacher.php');
+            }
         }
+        exit();
     }
-            exit();
-}
+    if (isset($_POST['saveStudent'])) {
+        $num_zach = new Student();
+        $student = new Student();
+        $student->gruppa_id = Helper::clearInt($_POST['gruppa_id']);
+        $student->user_id = $user->user_id;
+        $num_zach->num_zach = Helper::clearString($_POST['num_zach']);
+        if ((new StudentMap())->save($user,  $student, $num_zach)) {
+            header('Location: profile-student.php?id=' . $studentr->user_id);
+        } else {
+            if ($student->user_id) {
+                header('Location: add-student.php?id=' . $student->user_id);
+            } else {
+                header('Location: add-student.php');
+            }
+        }
+        exit();
+    }
 }

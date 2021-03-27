@@ -14,6 +14,9 @@
 class Gruppa extends Table {
     //put your code here
     public function validate() {
+        if (!empty($this->name) && !empty($this->special_id)&& !empty($this->date_begin)&& !empty($this->date_end)) {
+            return true;
+        }
         return false;
     }
     public $gruppa_id = 0;

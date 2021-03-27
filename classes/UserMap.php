@@ -1,39 +1,41 @@
 <?php
-class UserMap extends BaseMap{
+class UserMap extends BaseMap
+{
     public function auth($login, $password)
     {
         $login = $this->db->quote($login);
         $res = $this->db->query("SELECT user.user_id,CONCAT(user.lastname,' ', user.firstname, ' ', user.patronymic) AS fio, " . "user.pass, role.sys_name, role.name FROM user " . "INNER JOIN role ON user.role_id=role.role_id " . "WHERE user.login = $login AND user.active = 1");
         $user = $res->fetch(PDO::FETCH_OBJ);
-        if ($user) 
-        {
-            if (password_verify($password, $user->pass))
-            {
+        if ($user) {
+            if (password_verify($password, $user->pass)) {
                 return $user;
             }
         }
         return null;
     }
-    function findById($id = NULL){
+    function findById($id = NULL)
+    {
         if ($id) {
-            $res = $this->db->query("SELECT user_id, lastname, firstname, patronymic, login, pass, gender_id, birthday, role_id, active ". "FROM user WHERE user_id = $id");
+            $res = $this->db->query("SELECT user_id, lastname, firstname, patronymic, login, pass, gender_id, birthday, role_id, active " . "FROM user WHERE user_id = $id");
             $user = $res->fetchObject("User");
-                if ($user) {
-                    return $user;
-                }
+            if ($user) {
+                return $user;
+            }
         }
-            return new User();
+        return new User();
     }
     function arrGenders()
     {
         $res = $this->db->query("SELECT gender_id AS id, name AS value FROM gender");
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
-    function arrRoles(){
+    function arrRoles()
+    {
         $res = $this->db->query("SELECT role_id AS id, name AS value FROM role");
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
-    function save(User $user){
+    function save(User $user)
+    {
         if (!$this->existsLogin($user->login)) {
             if ($user->user_id == 0) {
                 return $this->insert($user);
@@ -41,9 +43,10 @@ class UserMap extends BaseMap{
                 return $this->update($user);
             }
         }
-            return false;
+        return false;
     }
-    private function insert(User $user) {      
+    private function insert(User $user)
+    {
         $lastname = $this->db->quote($user->lastname);
         $firstname = $this->db->quote($user->firstname);
         $patronymic = $this->db->quote($user->patronymic);
@@ -51,24 +54,26 @@ class UserMap extends BaseMap{
         $pass = $this->db->quote($user->pass);
         $birthday = $this->db->quote($user->birthday);
         if ($this->db->exec("INSERT INTO user(lastname,firstname, patronymic, login, pass, gender_id, birthday, role_id, active)" . " VALUES($lastname, $firstname, $patronymic, $login, $pass, $user->gender_id, $birthday, $user->role_id, $user->active)") == 1) {
-             $user->user_id = $this->db->lastInsertId();
-             return true;
+            $user->user_id = $this->db->lastInsertId();
+            return true;
         }
         return false;
     }
-    private function update(User $user){
+    private function update(User $user)
+    {
         $lastname = $this->db->quote($user->lastname);
         $firstname = $this->db->quote($user->firstname);
         $patronymic = $this->db->quote($user->patronymic);
         $login = $this->db->quote($user->login);
         $pass = $this->db->quote($user->pass);
         $birthday = $this->db->quote($user->birthday);
-        if ( $this->db->exec("UPDATE user SET lastname = $lastname, firstname = $firstname, patronymic = $patronymic,". " login = $login, pass = $pass, gender_id = $user->gender_id, birthday = $birthday, role_id = $user->role_id, active = $user->active " . "WHERE user_id = ".$user->user_id) == 1) {
+        if ($this->db->exec("UPDATE user SET lastname = $lastname, firstname = $firstname, patronymic = $patronymic," . " login = $login, pass = $pass, gender_id = $user->gender_id, birthday = $birthday, role_id = $user->role_id, active = $user->active " . "WHERE user_id = " . $user->user_id) == 1) {
             return true;
         }
         return false;
     }
-    private function existsLogin($login){
+    private function existsLogin($login)
+    {
         $login = $this->db->quote($login);
         $res = $this->db->query("SELECT user_id FROM user WHERE login = $login");
         if ($res->fetchColumn() > 0) {
@@ -82,6 +87,6 @@ class UserMap extends BaseMap{
             $res = $this->db->query("SELECT user.user_id, CONCAT(user.lastname,' ', user.firstname, ' ', user.patronymic) AS fio," . " user.login, user.birthday, gender.name AS gender, role.name AS role, user.active FROM user " . "INNER JOIN gender ON user.gender_id=gender.gender_id INNER JOIN role ON user.role_id=role.role_id WHERE user.user_id = $id");
             return $res->fetch(PDO::FETCH_OBJ);
         }
-            return false;
+        return false;
     }
 }

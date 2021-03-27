@@ -6,29 +6,29 @@ if (isset($_GET['page'])) {
 } else {
     $page = 1;
 }
-$teacherMap = new TeacherMap();
-$count = $teacherMap->count();
-$teachers = $teacherMap->findAll($page * $size - $size, $size);
-$header = 'Список преподавателей';
+$studentMap = new StudentMap();
+$count = $studentMap->count();
+$students = $studentMap->findAll($page * $size - $size, $size);
+$header = 'Список студентов';
 require_once 'template/header.php';
 ?>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
             <section class="content-header">
-                <h1>Список преподавателей</h1>
+                <h1>Список студентов</h1>
                 <ol class="breadcrumb">
                     <li><a href="/index.php"><i class="fa fa-dashboard"></i> Главная</a></li>
-                    <li class="active">Список преподавателей</li>
+                    <li class="active">Список студентов</li>
                 </ol>
             </section>
             <div class="box-body">
-                <a class="btn btn-success" href="add-teacher.php">Добавить преподавателя</a>
+                <a class="btn btn-success" href="add-student.php">Добавить студента</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <?php
-                if ($teachers) {
+                if ($students) {
                 ?>
                     <table id="example2" class="table table-bordered table-hover">
 
@@ -39,24 +39,26 @@ require_once 'template/header.php';
                                 <th>Дата рождения</th>
                                 <th>Отделение</th>
                                 <th>Роль</th>
+                                <th>num_zach</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($teachers as $teacher) {
+                            foreach ($students as $student) {
                                 echo '<tr>';
-                                echo '<td><a href="profile-teacher.php?id=' . $teacher->user_id . '">' . $teacher->fio . '</a> ' . '<a href="add-teacher.php?id=' . $teacher->user_id . '"><i class="fa fa-pencil"></i></a></td>';
-                                echo '<td>' . $teacher->gender . '</td>';
-                                echo '<td>' . $teacher->birthday . '</td>';
-                                echo '<td>' . $teacher->otdel . '</td>';
-                                echo '<td>' . $teacher->role . '</td>';
+                                echo '<td><a href="profile-student.php?id=' . $student->user_id . '">' . $student->fio . '</a> ' . '<a href="add-student.php?id=' . $student->user_id . '"><i class="fa fa-pencil"></i></a></td>';
+                                echo '<td>' . $student->gender . '</td>';
+                                echo '<td>' . $student->birthday . '</td>';
+                                echo '<td>' . $student->gruppa . '</td>';
+                                echo '<td>' . $student->role . '</td>';
+                                echo '<td>' . $student->num_zach . '</td>';
                                 echo '</tr>';
                             }
                             ?>
                         </tbody>
                     </table>
                 <?php } else {
-                    echo 'Ни одного преподавателя не найдено';
+                    echo 'Ни одного студента не найдено';
                 } ?>
             </div>
             <div class="box-body">
