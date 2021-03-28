@@ -1,16 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of GruppaMap
- *
- * @author ruslan
- */
 class GruppaMap extends BaseMap{
     function arrGruppas(){
         $res = $this->db->query("SELECT gruppa_id AS id, name AS value FROM gruppa");
@@ -62,5 +50,9 @@ class GruppaMap extends BaseMap{
             return $res->fetch(PDO::FETCH_OBJ);
         }
         return false;
+    }
+    function findAll($ofset = 0, $limit=30){
+        $res = $this->db->query("SELECT gruppa.gruppa_id, gruppa.name, special.name AS special, gruppa.date_begin, gruppa.date_end" . " FROM gruppa INNER JOIN special ON gruppa.special_id=special.special_id LIMIT $ofset,$limit");
+        return $res->fetchAll(PDO::FETCH_OBJ);
     }
 }
