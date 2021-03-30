@@ -22,6 +22,19 @@
                 <a href="list-subject.php"><i class="fa fa-users"></i><span>Предмет</span></a>
                 <li <?=($_SERVER['PHP_SELF']=='/list-classroom.php')?'class="active"':'';?>>
                 <a href="list-classroom.php"><i class="fa fa-users"></i><span>Аудитория</span></a>
+                <li <?= ($_SERVER['PHP_SELF'] == '/list-teacher-schedule.php') ? 'class="active"' : ''; ?>>
+                <?php if (!Helper::can('student')) {
+                    ?>
+                <a href="list-teacher-schedule.php"><i class="fa fa-users"></i><span>Управление расписанием </span></a>
+                <li <?= ($_SERVER['PHP_SELF'] == '/list-teacher-schedule.php') ? 'class="active"' : ''; ?>>
+                 <?php    
+                }?>
+                <?php if (!Helper::can('teacher')) {
+                    ?>
+                <a href="list-student-schedule.php"><i class="fa fa-users"></i><span>Управление расписанием </span></a>
+                <li <?= ($_SERVER['PHP_SELF'] == '/list-student-schedule.php') ? 'class="active"' : ''; ?>>
+                 <?php    
+                }?>
             </li>
         </ul>
     </section>

@@ -1,8 +1,8 @@
 <?php
 
 class ClassroomMap extends BaseMap{
-    function arrClassroom(){
-        $res = $this->db->query("SELECT classroom_id AS id, name AS value FROM classroom");
+    function arrClassrooms(){
+        $res = $this->db->query("SELECT classroom_id AS id, name AS value FROM classroom WHERE active=1");
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
     function findById($id =NULL){

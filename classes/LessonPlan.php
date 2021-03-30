@@ -1,19 +1,15 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of LessonPlan
- *
- * @author ruslan
- */
 class LessonPlan extends Table {
-    //put your code here
     public function validate() {
+        try {
+            if (!empty($this->gruppa_id) && !empty($this->subject_id) && !empty($this->user_id)) {
+                return true;
+            } else {
+                throw new Exception('Не переданны все параметры');
+            }
+        } catch (Exception $ex) {
+            return false;
+            }
         return false;
     }
     public $lesson_plan_id = 0;

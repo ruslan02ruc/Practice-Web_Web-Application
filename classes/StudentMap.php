@@ -1,14 +1,16 @@
 <?php
-class StudentMap extends BaseMap{
+class StudentMap extends BaseMap
+{
     function findById($id = null)
     {
         if ($id) {
-            $res = $this->db->query("SELECT user_id, gruppa_id FROM Student WHERE user_id = $id");
+            $res = $this->db->query("SELECT user_id, gruppa_id FROM student WHERE user_id = $id");
             $student = $res->fetchObject("Student");
             if ($student) {
                 return $student;
             }
         }
+        return new Student();
     }
     function save(User $user, Student $student, Student $num_zach)
     {
