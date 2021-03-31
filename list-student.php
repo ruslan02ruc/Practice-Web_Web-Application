@@ -43,7 +43,6 @@ require_once 'template/header.php';
                                 <th>Дата рождения</th>
                                 <th>Отделение</th>
                                 <th>Роль</th>
-                                <th>num_zach</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +54,7 @@ require_once 'template/header.php';
                                 echo '<td>' . $student->birthday . '</td>';
                                 echo '<td>' . $student->gruppa . '</td>';
                                 echo '<td>' . $student->role . '</td>';
-                                echo '<td>' . $student->num_zach . '</td>';
+
                                 echo '</tr>';
                             }
                             ?>

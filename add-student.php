@@ -36,10 +36,6 @@ require_once 'template/header.php';
             </select>
         </div>
         <div class="form-group">
-            <label>num_zach</label>
-            <input type="text" class="form-control" name="num_zach" value="<?= $num_zach->num_zach; ?>">
-        </div>
-        <div class="form-group">
             <label>Заблокировать</label>
             <div class="radio">
                 <label>

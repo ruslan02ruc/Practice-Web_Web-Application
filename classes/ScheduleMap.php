@@ -63,7 +63,7 @@ class ScheduleMap extends BaseMap{
         $res = $this->db->query("SELECT schedule.schedule_id,lesson_num.name AS lesson_num,subject.name AS subject,classroom.name AS classroom FROM lesson_plan " . "INNER JOIN schedule ON lesson_plan.lesson_plan_id=schedule.lesson_plan_id " . "INNER JOIN subject ON lesson_plan.subject_id=subject.subject_id INNER JOIN " . "lesson_num ON schedule.lesson_num_id=lesson_num.lesson_num_id INNER JOIN " . "classroom ON schedule.classroom_id=classroom.classroom_id WHERE " . "lesson_plan.user_id=$teacherId AND schedule.day_id=$dayId AND lesson_plan.gruppa_id=$gruppaId" . " ORDER BY schedule.lesson_num_id");
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
-    function findGruppaByStudentId($id){
+    /*function findGruppaByStudentId($id){
         $res = $this->db->query("SELECT gruppa.gruppa_id,gruppa.name FROM student
             INNER JOIN gruppa ON student.gruppa_id = gruppa.gruppa_id
             WHERE student.user_id = $id");
@@ -96,6 +96,46 @@ class ScheduleMap extends BaseMap{
             $result['allschedule'] = $arrDay;
         }
         return $result;
+    }*/
+	public function findByStudentId($id = null){
+        $days = $this->findDays();
+        $result = [];
+        $gruppa = $this->findGruppaByStudentId($id);
+
+        $result['gruppa'] = $gruppa['name'];
+
+        foreach ($days as $day) {
+        $arrDay = [];
+        $arrDay['id'] = $day->day_id;
+        $arrDay['name'] = $day->name;
+        
+        $arrDay['schedule'] = $this->findByGruppaDayStudent($day->day_id,$gruppa['gruppa_id']);
+        
+        $result['allSchedule'][] = $arrDay;
+        }
+        return $result;
+    }
+    
+    public function findByGruppaDayStudent($dayId, $gruppaId){
+        $res = $this->db->query("SELECT
+        schedule.schedule_id,lesson_num.name AS
+        lesson_num,subject.name AS subject, gruppa.name AS gruppa, classroom.name AS classroom FROM lesson_plan 
+        INNER JOIN schedule ON
+        lesson_plan.lesson_plan_id=schedule.lesson_plan_id INNER JOIN subject ON
+        lesson_plan.subject_id=subject.subject_id INNER JOIN lesson_num ON
+        schedule.lesson_num_id=lesson_num.lesson_num_id INNER JOIN gruppa ON gruppa.gruppa_id=lesson_plan.gruppa_id INNER JOIN classroom ON
+        schedule.classroom_id=classroom.classroom_id 
+        WHERE schedule.day_id=$dayId AND lesson_plan.gruppa_id = $gruppaId
+        
+        ORDER BY schedule.lesson_num_id");
+        return $res->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function findGruppaByStudentId($id){
+         $res = $this->db->query("SELECT gruppa.gruppa_id, gruppa.name 
+            FROM student
+            INNER JOIN gruppa ON student.gruppa_id = gruppa.gruppa_id
+            WHERE student.user_id = $id ");
+          return $res->fetch(PDO::FETCH_ASSOC);
     }
     function delete($id){
         if ($this->db->exec("DELETE FROM schedule WHERE schedule_id=$id") == 1) {
